@@ -1,14 +1,37 @@
 import 'package:flutter/material.dart';
 
-// Fondo principal (Azul marino oscuro, muy profesional y tecnológico)
-const Color kPrimaryBackgroundColor = Color(0xFF0B172A);
+/// Paleta de colores de FireSentinel.
+abstract final class AppColors {
+  /// Fondo principal (azul marino oscuro).
+  static const background = Color(0xFF0B172A);
 
-// Fondo de los campos de texto o tarjetas (Un azul medianoche ligeramente más claro para hacer contraste)
-const Color kCardBackgroundColor = Color(0xFF16253B);
+  /// Fondo de tarjetas y barra de navegación (azul medianoche más claro).
+  static const card = Color(0xFF16253B);
 
-// Color de acento (El rojo intenso del escudo de FireSentinel para botones y alertas)
-const Color kAccentColor = Color(0xFFD32F2F);
+  /// Naranja/rojo fuego de la parte superior de los degradados.
+  static const fire = Color(0xFFD84315);
 
-// Colores de texto (Se mantienen igual para contrastar con el fondo oscuro)
-const Color kWhiteColor = Colors.white;
-const Color kHintTextColor = Colors.white54;
+  /// Rojo del escudo de FireSentinel (acentos, ítem seleccionado).
+  static const accent = Color(0xFFD32F2F);
+
+  /// Rojo fuerte de los botones principales.
+  static const button = Color(0xFFD30000);
+
+  /// Estado "SEGURO".
+  static const safe = Color(0xFF00C853);
+
+  /// Estado "PELIGRO".
+  static const danger = Colors.redAccent;
+
+  /// Tarjetas de métricas en rango normal.
+  static const metricNormal = Color(0xFF0277BD);
+
+  /// Tarjetas de métricas fuera de rango.
+  static const metricAlert = Colors.red;
+
+  /// Mensajes de error / advertencia sobre fondo oscuro.
+  static const warning = Colors.amber;
+
+  static const white = Colors.white;
+  static const textSecondary = Colors.white70;
+}

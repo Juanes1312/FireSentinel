@@ -1,7 +1,7 @@
-import 'package:firesentinel/config/routes/app_routes.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firesentinel/config/theme/app_colors.dart';
+
+import '../../config/theme/app_colors.dart';
+import '../../services/auth_service.dart';
 
 class CustomBottomNavigation extends StatefulWidget {
   const CustomBottomNavigation({super.key});
@@ -11,40 +11,39 @@ class CustomBottomNavigation extends StatefulWidget {
 }
 
 class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
+  static const _logoutIndex = 2;
   int _currentIndex = 0;
+
+  Future<void> _onTap(int index) async {
+    if (index != _logoutIndex) {
+      setState(() => _currentIndex = index);
+      return;
+    }
+
+    // AuthGate detecta el cierre de sesión y muestra el login solo.
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      await AuthService.signOut();
+    } catch (e) {
+      messenger.showSnackBar(SnackBar(content: Text('Error al cerrar sesión: $e')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      backgroundColor: kCardBackgroundColor,
-      selectedItemColor: kAccentColor,
+      backgroundColor: AppColors.card,
+      selectedItemColor: AppColors.accent,
       unselectedItemColor: Colors.grey[400],
       showSelectedLabels: false,
       showUnselectedLabels: false,
       type: BottomNavigationBarType.fixed,
-
       currentIndex: _currentIndex,
-      onTap: (index) async {
-        if (index == 2) {
-          try {
-            await FirebaseAuth.instance.signOut();
-            Navigator.of(context).pushNamedAndRemoveUntil(AppRoute.loginRoute, (route) => false);
-          } catch (e) {
-            if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error al cerrar sesión: $e')));
-            }
-          }
-          return;
-        }
-
-        setState(() {
-          _currentIndex = index;
-        });
-      },
+      onTap: _onTap,
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_month_outlined), activeIcon: Icon(Icons.calendar_month), label: 'Calendar'),
-        BottomNavigationBarItem(icon: Icon(Icons.bar_chart_outlined), activeIcon: Icon(Icons.bar_chart), label: 'Chart'),
-        BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'Cerrar Sesión'),
+        BottomNavigationBarItem(icon: Icon(Icons.calendar_month_outlined), activeIcon: Icon(Icons.calendar_month), label: 'Calendario'),
+        BottomNavigationBarItem(icon: Icon(Icons.bar_chart_outlined), activeIcon: Icon(Icons.bar_chart), label: 'Gráficas'),
+        BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'Cerrar sesión'),
       ],
     );
   }
